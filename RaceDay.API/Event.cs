@@ -11,6 +11,7 @@ public class Event
     public decimal DistanceKm { get; set; }
     public int Capacity { get; set; }
     public string EventType { get; set; } = string.Empty; // Run, Walk, Cycle
+    public string? BannerUrl { get; set; }
     public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
 
     public User Organiser { get; set; } = null!;

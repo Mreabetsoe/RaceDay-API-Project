@@ -1,0 +1,81 @@
+﻿@model List<RaceDay.Web.Models.EventViewModel>
+
+@{
+    ViewData["Title"] = "Events";
+}
+
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h1>Discover Events</h1>
+            <p class="text-muted">Find your next challenge.</p>
+        </div>
+
+        @if (Context.Session.GetString("Role") == "Organiser")
+        {
+            <a asp-action="Create" class="btn btn-primary">
+                + Create Event
+            </a>
+        }
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">@ViewBag.Error</div>
+    }
+
+    <div class="row">
+        @foreach (var item in Model)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100 shadow-sm">
+                    @if (!string.IsNullOrEmpty(item.BannerUrl))
+                    {
+                        <img src="@item.BannerUrl"
+                             class="card-img-top"
+                             style="height:180px; object-fit:cover;"
+                             alt="@item.Name" />
+                    }
+
+                    <div class="card-body">
+                        <span class="badge bg-primary">@item.EventType</span>
+                        <h5 class="card-title mt-2">@item.Name</h5>
+                        <p class="text-muted">@item.Location</p>
+                        <p>Date: @item.EventDate</p>
+                        <p>Distance: @item.DistanceKm km</p>
+
+                        <a asp-action="Details"
+                           asp-route-id="@item.Id"
+                           class="btn btn-dark">
+                            View Details
+                        </a>
+
+                        @if (Context.Session.GetString("Role") == "Organiser")
+                        {
+                            <a asp-action="Edit"
+                               asp-route-id="@item.Id"
+                               class="btn btn-outline-primary">
+                                Edit
+                            </a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p>No events are currently available.</p>
+    }
+</div>
